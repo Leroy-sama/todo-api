@@ -48,6 +48,27 @@ export const createNewTodo = async (
 	}
 };
 
+export const getTodo = async (req: express.Request, res: express.Response) => {
+	try {
+		const { id } = req.params;
+		const todo = await getTodoById(id);
+		res.status(200).json({
+			status: "success",
+			data: {
+				todo,
+			},
+		});
+		return;
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({
+			status: "Fail",
+			message: err.message,
+		});
+		return;
+	}
+};
+
 export const getAllTodos = async (
 	req: express.Request,
 	res: express.Response
@@ -68,5 +89,71 @@ export const getAllTodos = async (
 			status: "Fail",
 			message: err.message,
 		});
+		return;
+	}
+};
+
+export const updateTodo = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const { id } = req.params;
+		const { task, completed, priority } = req.body;
+
+		const todo = await getTodoById(id);
+
+		if (!todo) {
+			res.status(404).json({
+				status: "fail",
+				message: "todo not found",
+			});
+			return;
+		}
+
+		const updatedTodo = await updateTodoById(id, {
+			task,
+			completed,
+			priority,
+		});
+		res.status(200).json({
+			status: "success",
+			data: updatedTodo,
+		});
+		return;
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({
+			status: "Fail",
+			message: err.message,
+		});
+		return;
+	}
+};
+
+export const deleteTodo = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const { id } = req.params;
+		const deleteTodo = await deleteTodoById(id);
+
+		if (!deleteTodo) {
+			return res.status(404).json({
+				status: "fail",
+				message: "Todo not found or already deleted",
+			});
+		}
+
+		res.status(204).send();
+		return;
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({
+			status: "Fail",
+			message: err.message,
+		});
+		return;
 	}
 };

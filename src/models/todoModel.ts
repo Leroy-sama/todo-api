@@ -38,4 +38,4 @@ export const createTodo = (todoValue: Todo) =>
 export const deleteTodoById = (id: string) =>
 	TodoModel.findOneAndDelete({ _id: id });
 export const updateTodoById = (id: string, todo: Todo) =>
-	TodoModel.findByIdAndUpdate(id, todo);
+	TodoModel.findByIdAndUpdate(id, todo, { new: true, runValidators: true });
