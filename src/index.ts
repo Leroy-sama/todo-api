@@ -3,12 +3,19 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import todoRouter from "./routes/todoRouter";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 dotenv.config({ path: "./config.env" });
 
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(
+	cors({
+		origin: "*",
+		credentials: true,
+	})
+);
 
 if (!process.env.DATABASE_URL || !process.env.DATABASE_PASSWORD) {
 	throw new Error("Database configuration missing");
