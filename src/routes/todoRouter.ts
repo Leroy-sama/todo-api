@@ -10,6 +10,10 @@ import {
 const router = Router();
 
 router.route("/api/todos").get(getAllTodos).post(createNewTodo);
-router.route("/api/todos/:id").get(getTodo).patch(updateTodo);
+router
+	.route("/api/todos/:id")
+	.get(getTodo)
+	.patch(updateTodo)
+	.delete(deleteTodo);
 
 export default router;

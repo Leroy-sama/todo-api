@@ -140,10 +140,11 @@ export const deleteTodo = async (
 		const deleteTodo = await deleteTodoById(id);
 
 		if (!deleteTodo) {
-			return res.status(404).json({
+			res.status(404).json({
 				status: "fail",
 				message: "Todo not found or already deleted",
 			});
+			return;
 		}
 
 		res.status(204).send();
